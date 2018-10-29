@@ -25,6 +25,11 @@ public:
   Relation(string newName, vector<string> newColumns);
   ~Relation()=default;
   void insertRow(const vector<string> newRow);
+
+  //select function that takes vector of cvpairs or vector of ccpairs???
+  //project function that takes vector of columns to keep
+    // creates a new table, DOES NOT CHANGE current tableName
+  //rename function that takes vector of cvpiars
   string toString();
 };
 
