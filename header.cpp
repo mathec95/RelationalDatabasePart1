@@ -2,8 +2,8 @@
 #include <sstream>
 
 //constructor: adds column names to vector
-Header::Header(vector<string> newNames) {
-  for (unsigned int i=0; i < newNames.length(); i++) {
+void Header::setNames(vector<string> newNames) {
+  for (unsigned int i=0; i < newNames.size(); i++) {
     names.push_back(newNames[i]);
   }
 }
@@ -11,7 +11,7 @@ Header::Header(vector<string> newNames) {
 //toString function: returns each element of the vector
 string Header::toString() {
   stringstream os;
-  for (unsigned int i=0; i < names.length(); ++i) {
+  for (unsigned int i=0; i < names.size(); ++i) {
     os << "\t" << names[i];
   }
   return os.str();

@@ -15,9 +15,13 @@ class Row {
 private:
   vector<string> cellVals;
 public:
-  Row(vector<string> newVals);
+  Row(const vector<string> newVals);
   ~Row()=default;
-  string toString();
+  string toString() const;
+  string getStartingCell() const;
+  bool operator<(const Row temp) const{
+    return cellVals[0] < temp.getStartingCell();
+  };
 };
 
 #endif //ROW_H

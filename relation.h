@@ -8,6 +8,8 @@ insert function (adds a row to the Row set)
 
 #ifndef RELATION_H
 #define RELATION_H
+#include "header.h"
+#include "row.h"
 #include <string>
 #include <set>
 #include <vector>
@@ -22,7 +24,7 @@ private:
 public:
   Relation(string newName, vector<string> newColumns);
   ~Relation()=default;
-  void insertRow(vector<string> newRow);
+  void insertRow(const vector<string> newRow);
   string toString();
 };
 

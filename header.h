@@ -14,8 +14,9 @@ class Header {
 private:
   vector<string> names;
 public:
-  Header(vector<string> newNames);
+  Header()=default;
   ~Header()=default;
+  void setNames(vector<string> newNames);
   string toString();
 };
 
