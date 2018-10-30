@@ -8,6 +8,11 @@ void Header::setNames(vector<string> newNames) {
   }
 }
 
+//rename function: changes column name at index to given value
+void Header::rename(const CVPair colValPair) {
+  names[colValPair.getCol()] = colValPair.getVal();
+}
+
 //toString function: returns each element of the vector
 string Header::toString() {
   stringstream os;

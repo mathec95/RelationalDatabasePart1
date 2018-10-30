@@ -5,6 +5,7 @@ vector<string> (list of column names)
 
 #ifndef HEADER_H
 #define HEADER_H
+#include "cvpair.h"
 #include <vector>
 #include <string>
 
@@ -17,6 +18,7 @@ public:
   Header()=default;
   ~Header()=default;
   void setNames(vector<string> newNames);
+  void rename(const CVPair colValPair);
   string toString();
 };
 

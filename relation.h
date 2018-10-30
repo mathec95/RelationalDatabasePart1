@@ -10,6 +10,8 @@ insert function (adds a row to the Row set)
 #define RELATION_H
 #include "header.h"
 #include "row.h"
+#include "ccpair.h"
+#include "cvpair.h"
 #include <string>
 #include <set>
 #include <vector>
@@ -29,7 +31,7 @@ public:
   //select function that takes vector of cvpairs or vector of ccpairs???
   //project function that takes vector of columns to keep
     // creates a new table, DOES NOT CHANGE current tableName
-  //rename function that takes vector of cvpiars
+  void rename(const CVPair colValPair);
   string toString();
 };
 

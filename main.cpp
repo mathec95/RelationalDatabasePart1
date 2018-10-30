@@ -1,6 +1,7 @@
 #include "relation.h"
 //#include "header.h"
 #include "row.h"
+#include "cvpair.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -13,5 +14,9 @@ int main() {
   vector<string> row1 = {"alpha", "beta", "gamma"};
   myRelation.insertRow(row1);
   cout << myRelation.toString();
+  CVPair colValPair(1, "D");
+  Relation myRelation2 = myRelation;
+  myRelation2.rename(colValPair);
+  cout << myRelation2.toString();
   return 0;
 }

@@ -13,6 +13,11 @@ void Relation::insertRow(const vector<string> newRow) {
   rows.insert(temp); //this might not work, syntax might be wrong
 }
 
+//rename function: changes the name of column to the given value
+void Relation::rename(const CVPair colValPair) {
+  columnNames.rename(colValPair);
+}
+
 //toString function: prints relation in a table form
 string Relation::toString() {
   stringstream os;
