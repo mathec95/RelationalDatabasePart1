@@ -8,6 +8,7 @@ Row::Row(vector<string> newVals) {
   }
 }
 
+//toString function: returns all values in row as a string
 string Row::toString() const {
   stringstream os;
   os << "\t";
@@ -17,6 +18,15 @@ string Row::toString() const {
   return os.str();
 }
 
+//getStartingCell function: return the first value (for sorting)
 string Row::getStartingCell() const{
   return cellVals[0];
+}
+
+// valueExists function: checks for a column Value Pair in the row
+bool Row::valueExists(const CVPair colValPair) const{
+  if (cellVals[colValPair.getCol()] == colValPair.getVal()) {
+    return true;
+  }
+  return false;
 }
