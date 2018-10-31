@@ -15,7 +15,7 @@ void Relation::insertRow(const vector<string> newRow) {
 
 //select function: keeps rows that have given values in them
 Relation Relation::select(const vector<CVPair> cvpList) {
-  Relation tempRelation("temp", columnNames.getNames());
+  Relation tempRelation(tableName, columnNames.getNames());
   for (Row i : rows) {
     bool keep = false;
     for (unsigned int j=0; j < cvpList.size(); j++) {
@@ -35,8 +35,7 @@ Relation Relation::select(const vector<CVPair> cvpList) {
 
 //select function: keeps rows where given columns have same value
 Relation Relation::select(const vector<CCPair> ccpList) {
-  Relation tempRelation("temp", columnNames.getNames());
-//  set<Row> tempset;
+  Relation tempRelation(tableName, columnNames.getNames());
   for (Row i : rows) {
     bool keep = false;
     for (unsigned int j=0; j < ccpList.size(); j++) {
@@ -56,8 +55,18 @@ Relation Relation::select(const vector<CCPair> ccpList) {
 }
 
 //rename function: changes the name of column to the given value
-void Relation::rename(const CVPair colValPair) {
-  columnNames.rename(colValPair);
+Relation Relation::rename(const vector<CVPair> cvpList) {
+  vector<string> tempNames = columnNames.getNames();
+  Header tempHeader;
+  tempHeader.setNames(tempNames);
+  for (unsigned int i=0; i < cvpList.size(); i++) {
+    tempHeader.rename(cvpList[i]);
+  }
+  Relation tempRelation(tableName, tempHeader.getNames());
+  for (Row i : rows) {
+    tempRelation.insertRow(i.getCellVals());
+  }
+  return tempRelation;
 }
 
 Relation Relation::project(const vector<int> columnsToKeep) {
@@ -65,7 +74,7 @@ Relation Relation::project(const vector<int> columnsToKeep) {
   for (unsigned int i=0; i < columnsToKeep.size(); i++) {
     tempNames.push_back(columnNames.atIndex(columnsToKeep[i]));
   }
-  Relation tempRelation("temp", tempNames);
+  Relation tempRelation(tableName, tempNames);
   for (Row i : rows) {
     vector<string> currentCellVals = i.getCellVals();
     vector<string> tempCellVals;
@@ -80,6 +89,8 @@ Relation Relation::project(const vector<int> columnsToKeep) {
 
 //toString function: prints relation in a table form
 string Relation::toString() {
+  //change this for next lab:
+  //A='apple', B='banana', C='grape'
   stringstream os;
   os << tableName << endl;
   os << columnNames.toString() << endl;

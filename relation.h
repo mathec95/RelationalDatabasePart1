@@ -30,7 +30,7 @@ public:
   Relation select(const vector<CVPair> cpvList);
   Relation select(const vector<CCPair> ccpList);
   Relation project(const vector<int> columnsToKeep);
-  void rename(const CVPair colValPair);
+  Relation rename(const vector<CVPair> cvpList);
   string toString();
 };
 
