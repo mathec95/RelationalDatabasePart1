@@ -19,6 +19,8 @@ public:
   ~Header()=default;
   void setNames(vector<string> newNames);
   void rename(const CVPair colValPair);
+  vector<string> getNames() const;
+  string atIndex(int index) const;
   string toString();
 };
 

@@ -13,6 +13,15 @@ void Header::rename(const CVPair colValPair) {
   names[colValPair.getCol()] = colValPair.getVal();
 }
 
+//getNames function: returns the names as a vector of strings
+vector<string> Header::getNames() const {
+  return names;
+}
+
+//atIndex function: returns string at given index
+string Header::atIndex(int index) const{
+  return names[index];
+}
 //toString function: returns each element of the vector
 string Header::toString() {
   stringstream os;

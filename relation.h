@@ -27,10 +27,9 @@ public:
   Relation(string newName, vector<string> newColumns);
   ~Relation()=default;
   void insertRow(const vector<string> newRow);
-  void select(const vector<CVPair> cpvList);
-  void select(const vector<CCPair> ccpList);
-  //project function that takes vector of columns to keep
-    // creates a new table, DOES NOT CHANGE current tableName
+  Relation select(const vector<CVPair> cpvList);
+  Relation select(const vector<CCPair> ccpList);
+  Relation project(const vector<int> columnsToKeep);
   void rename(const CVPair colValPair);
   string toString();
 };

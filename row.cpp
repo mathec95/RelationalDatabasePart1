@@ -23,9 +23,21 @@ string Row::getStartingCell() const{
   return cellVals[0];
 }
 
+//getCellVals function: returns cel values as a vector of strings
+vector<string> Row::getCellVals() const{
+  return cellVals;
+}
+
 // valueExists function: checks for a column Value Pair in the row
 bool Row::valueExists(const CVPair colValPair) const{
   if (cellVals[colValPair.getCol()] == colValPair.getVal()) {
+    return true;
+  }
+  return false;
+}
+
+bool Row::pairExists(const CCPair colColPair) const{
+  if (cellVals[colColPair.getCol1()] == cellVals[colColPair.getCol2()]) {
     return true;
   }
   return false;
