@@ -80,34 +80,70 @@ int main() {
   myRelation.insertRow(row7);
   myRelation.insertRow(row8);
 //Print original Relation
-  cout << "New Relation Example:" << endl;
+  cout << endl << "New Relation Example:" << endl;
   cout << myRelation.toString();
 //Test 7: Q(X, 'Smith', Y)?
-  colValPair = CVPair(0, "X");
-  colValPair1 = CVPair(2, "Y");
-  cvpList = {colValPair, colValPair1};
-  myRelation1 = myRelation.rename(cvpList);
   colValPair2 = CVPair(1, "Smith");
   cvpList = {colValPair2};
-  myRelation1 = myRelation1.select(cvpList);
+  myRelation1 = myRelation.select(cvpList);
   columnsToKeep = {0, 2};
   myRelation1 = myRelation1.project(columnsToKeep);
+  colValPair = CVPair(0, "X");
+  colValPair1 = CVPair(1, "Y");
+  cvpList = {colValPair, colValPair1};
+  myRelation1 = myRelation1.rename(cvpList);
   cout << "Test 7: Q(X, 'Smith', Y)?" << endl;
   cout << myRelation1.toString();
 //Test 8: Q('Emily', Y, 'A')?
-  colValPair = CVPair(0, "X");
-  colValPair1 = CVPair(1, "Y");
-  colValPair2 = CVPair(2, "X");
-  cvpList = {colValPair, colValPair1, colValPair2};
-  myRelation1 = myRelation.rename(cvpList);
-  CCPair colColPair(0, 2);
-  ccpList = {colColPair};
-  myRelation1 = myRelation1.select(ccpList);
-  columnsToKeep = {0, 1, 2};
+  colValPair = CVPair(0, "Emily");
+  colValPair1 = CVPair(2, "A");
+  cvpList = {colValPair, colValPair1};
+  myRelation1 = myRelation.select(cvpList);
+  columnsToKeep = {1};
   myRelation1 = myRelation1.project(columnsToKeep);
+  colValPair = CVPair(0, "Y");
+  cvpList = {colValPair};
+  myRelation1 = myRelation1.rename(cvpList);
   cout << "Test 8: Q(X, Y, X)?" << endl;
   cout << myRelation1.toString();
-//Test 9:
-//Test 10:
+
+//New relation example
+  columns = {"Due", "Scheduled", "Completed"};
+  myRelation = Relation("To Do", columns);
+  row1 = {"10/04", "10/03", "10/04"};
+  row2 = {"10/10", "10/08", "10/08"};
+  row3 = {"10/12", "10/12", "10/13"};
+  row4 = {"10/15", "10/13", "10/15"};
+  row5 = {"10/20", "10/20", "10/20"};
+  myRelation.insertRow(row1);
+  myRelation.insertRow(row2);
+  myRelation.insertRow(row3);
+  myRelation.insertRow(row4);
+  myRelation.insertRow(row5);
+//Print Original Relation
+  cout << endl << "New Relation Example:" << endl;
+  cout << myRelation.toString();
+//Test 9: select using Colomn Column Pairs
+  colColPair1 = CCPair(0, 1);
+  colColPair2 = CCPair(0, 2);
+  ccpList = {colColPair1, colColPair2};
+  myRelation1 = myRelation.select(ccpList);
+  cout << "Select using Column Column Pairs" << endl;
+  cout << myRelation1.toString();
+//Test 10: Q(X, '10/03', X)?
+  colValPair = {1, "10/03"};
+  cvpList = {colValPair};
+  colColPair1 = {0, 2};
+  ccpList = {colColPair1};
+  myRelation1 = myRelation.select(ccpList);
+  myRelation1 = myRelation1.select(cvpList);
+  columnsToKeep = {0, 2};
+  myRelation1 = myRelation1.project(columnsToKeep);
+  colValPair = {0, "X"};
+  colValPair1 = {1, "X"};
+  cvpList = {colValPair, colValPair1};
+  myRelation1 = myRelation1.rename(cvpList);
+  cout << "Q(X, '10/03', X)?" << endl;
+  cout << myRelation1.toString();
   return 0;
 }
