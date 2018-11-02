@@ -86,9 +86,9 @@ int main() {
   testRelation = Relation("My Table", testColumns);
   row = {"alpha", "alpha", "alpha"};
   testRelation.insertRow(row);
-  row = {"apple", "banana", "grape"};
-  testRelation.insertRow(row);
   row = {"ant", "bee", "giraffe"};
+  testRelation.insertRow(row);
+  row = {"apple", "banana", "grape"};
   testRelation.insertRow(row);
 //  cout << testRelation.toString();
 
