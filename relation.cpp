@@ -1,6 +1,11 @@
 #include "relation.h"
 #include <sstream>
 
+Relation::Relation() {
+  tableName = "name";
+  columnNames.setNames({"test"});
+}
+
 //constructor: adds name and columns
 Relation::Relation(string newName, vector<string> newColumns) {
   tableName = newName;
@@ -24,6 +29,7 @@ Relation Relation::select(const vector<CVPair> cvpList) {
       }
       else {
         keep = false;
+        break;
       }
     }
     if (keep) {

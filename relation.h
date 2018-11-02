@@ -24,6 +24,7 @@ private:
   Header columnNames;
   set<Row> rows;
 public:
+  Relation();
   Relation(string newName, vector<string> newColumns);
   ~Relation()=default;
   void insertRow(const vector<string> newRow);

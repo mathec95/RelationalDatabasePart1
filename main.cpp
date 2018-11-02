@@ -8,142 +8,287 @@
 
 using namespace std;
 
+string compare(Relation myRelation, Relation testRelation) {
+  if (myRelation.toString() == testRelation.toString()) {
+    return "Success!";
+  }
+  return "Fail";
+}
+
 int main() {
 
-  //I don't understand why I need to RENAME things before I query them
-  //But my rename function works.
+  CVPair cvp1;
+  CVPair cvp2;
+  CVPair cvp3;
+  CCPair ccp1;
+  CCPair ccp2;
+  vector<string> columns;
+  vector<string> testColumns;
+  vector<string> row;
+  vector<string> testRow;
+  vector<CVPair> cvpList;
+  vector<CCPair> ccpList;
+  vector<int> columnsToKeep;
+  Relation myRelation;
+  Relation myRelationEdit1;
+  Relation myRelationEdit2;
+  Relation testRelation;
 
-  vector<string> columns = {"A", "B", "C"};
-  Relation myRelation("My Table", columns);
-//Test 1: print empty table
-  cout << "Test 1: print empty table" << endl;
-  cout << myRelation.toString();
-//Test 2: add rows
-  vector<string> row1 = {"alpha", "alpha", "alpha"};
-  vector<string> row2 = {"apple", "banana", "grape"};
-  vector<string> row3 = {"ant", "bee", "giraffe"};
-  myRelation.insertRow(row1);
-  myRelation.insertRow(row2);
-  myRelation.insertRow(row3);
-  cout << "Test 2: add rows" << endl;
-  cout << myRelation.toString();
+//New Relation
+  columns = {"A", "B", "C"};
+  myRelation = Relation("My Table", columns);
+  row = {"alpha", "alpha", "alpha"};
+  myRelation.insertRow(row);
+  row = {"apple", "banana", "grape"};
+  myRelation.insertRow(row);
+  row = {"ant", "bee", "giraffe"};
+  myRelation.insertRow(row);
+
+//Test 1: Select using Column Value Pairs
+  cvp1 = CVPair(0, "ant");
+  cvpList = {cvp1};
+  myRelationEdit1 = myRelation.select(cvpList);
+//  cout << myRelation1.toString();
+
+//Comparison Relation
+  testColumns = {"A", "B", "C"};
+  testRelation = Relation("My Table", testColumns);
+  testRow = {"ant", "bee", "giraffe"};
+  testRelation.insertRow(testRow);
+//  cout << testRelation.toString();
+
+  cout << "Test 1: " << compare(myRelationEdit1, testRelation) << endl;
+
+//Test 2: project two columns
+  columnsToKeep = {0, 2};
+  myRelationEdit1 = myRelation.project(columnsToKeep);
+
+//Comparison Relation
+  testColumns = {"A", "C"};
+  testRelation = Relation("My Table", testColumns);
+  testRow = {"alpha", "alpha"};
+  testRelation.insertRow(testRow);
+  testRow = {"apple", "grape"};
+  testRelation.insertRow(testRow);
+  testRow = {"ant", "giraffe"};
+  testRelation.insertRow(testRow);
+
+  cout << "Test 2: " << compare(myRelationEdit1, testRelation) << endl;
+
 //Test 3: rename a column
-  CVPair colValPair = CVPair(2, "G");
-  vector<CVPair> cvpList = {colValPair};
-  Relation myRelation1 = myRelation.rename(cvpList);
-  cout << "Test 3: rename column" << endl;
-  cout << myRelation1.toString();
+  cvp1 = CVPair(2, "G");
+  cvpList = {cvp1};
+  myRelationEdit1 = myRelation.rename(cvpList);
+//  cout << myRelationEdit1.toString();
+
+//Comparison Relation
+  testColumns = {"A", "B", "G"};
+  testRelation = Relation("My Table", testColumns);
+  row = {"alpha", "alpha", "alpha"};
+  testRelation.insertRow(row);
+  row = {"apple", "banana", "grape"};
+  testRelation.insertRow(row);
+  row = {"ant", "bee", "giraffe"};
+  testRelation.insertRow(row);
+//  cout << testRelation.toString();
+
+  cout << "Test 3: " << compare(myRelationEdit1, testRelation) << endl;
+
 //Test 4: Q('apple', 'banana')?
-  CVPair colValPair1(0, "apple");
-  CVPair colValPair2(1, "banana");
-  cvpList = {colValPair1, colValPair2};
-  vector<int> columnsToKeep = {0, 1};
-  Relation myRelation2 = myRelation1.select(cvpList);
-  myRelation2 = myRelation2.project(columnsToKeep);
-  cout << "Test 4: Q('apple', 'banana')?" << endl;
-  cout << myRelation2.toString();
-//Test 5: Q(X, X, X)?
-  CCPair colColPair1(0, 1);
-  CCPair colColPair2(0, 2);
-  vector<CCPair> ccpList = {colColPair1, colColPair2};
-  columnsToKeep = {0, 1, 2};
-  myRelation2 = myRelation1.select(ccpList);
-  myRelation2 = myRelation2.project(columnsToKeep);
-  cout << "Test 5: Q(X, X, X)?" << endl;
-  cout << myRelation2.toString();
-//Test 6: Q(X, Y, 'giraffe')?
-  colValPair = CVPair(2, "giraffe");
-  cvpList = {colValPair};
+  cvp1 = CVPair(0, "apple");
+  cvp2 = CVPair(1, "banana");
+  cvpList = {cvp1, cvp2};
   columnsToKeep = {0, 1};
-  myRelation2 = myRelation1.select(cvpList);
-  myRelation2 = myRelation2.project(columnsToKeep);
-  cout << "Test 6: Q(X, Y, 'giraffe')?" << endl;
-  cout << myRelation2.toString();
+  myRelationEdit2 = myRelationEdit1.select(cvpList);
+  myRelationEdit2 = myRelationEdit2.project(columnsToKeep);
+//  cout << "Test 4: Q('apple', 'banana')?" << endl;
+//  cout << myRelationEdit2.toString();
+
+//Comparison Relation
+  testColumns = {"A", "B"};
+  testRelation = Relation("My Table", testColumns);
+  testRow = {"apple", "banana"};
+  testRelation.insertRow(testRow);
+
+  cout << "Test 4: " << compare(myRelationEdit2, testRelation) << endl;
+
+//Test 5: Q(X, X, X)?
+
+//RENAME RENAME RENAME
+  ccp1 = CCPair(0, 1);
+  ccp2 = CCPair(0, 2);
+  ccpList = {ccp1, ccp2};
+  columnsToKeep = {0, 1, 2};
+  myRelationEdit2 = myRelationEdit1.select(cvpList);
+  myRelationEdit2 = myRelationEdit2.project(columnsToKeep);
+  cvp1 = CVPair(0, "X");
+  cvp2 = CVPair(1, "X");
+  cvp3 = CVPair(2, "X");
+  cvpList = {cvp1, cvp2, cvp3};
+  myRelationEdit2 = myRelationEdit2.rename(cvpList);
+//  cout << "Test 5: Q(X, X, X)?" << endl;
+//  cout << myRelationEdit2.toString();
+
+//Comparison Relation
+  testColumns = {"X", "X", "X"};
+  testRelation = Relation("My Table", testColumns);
+  testRow = {"apple", "banana", "grape"};
+  testRelation.insertRow(testRow);
+
+  cout << "Test 5: " << compare(myRelationEdit2, testRelation) << endl;
+
+//Test 6: Q(X, Y, 'giraffe')?
+//RENAME RENAME RENAME
+  cvp1 = CVPair(2, "giraffe");
+  cvpList = {cvp1};
+  myRelationEdit2 = myRelationEdit1.select(cvpList);
+  columnsToKeep = {0, 1};
+  myRelationEdit2 = myRelationEdit2.project(columnsToKeep);
+  cvp1 = CVPair(0, "X");
+  cvp2 = CVPair(1, "Y");
+  cvpList = {cvp1, cvp2};
+  myRelationEdit2 = myRelationEdit2.rename(cvpList);
+//  cout << myRelationEdit2.toString();
+
+//Comparison Relation
+  testColumns = {"X", "Y"};
+  testRelation = Relation("My Table", testColumns);
+  testRow = {"ant", "bee"};
+  testRelation.insertRow(testRow);
+//  cout << testRelation.toString();
+
+  cout << "Test 6: " << compare(myRelationEdit2, testRelation) << endl;
 
 //new Relation example
   columns = {"student", "teacher", "grade"};
   myRelation = Relation("school", columns);
-  row1 = {"Jim", "Robinson", "B+"};
-  row2 = {"Anne", "Robinson", "A"};
-  row3 = {"Bill", "Smith", "A-"};
-  vector<string> row4 = {"Chayne", "Smith", "C+"};
-  vector<string> row5 = {"Emily", "Fellows", "A"};
-  vector<string> row6 = {"George", "Robinson", "B+"};
-  vector<string> row7 = {"Anne", "Smith", "A"};
-  vector<string> row8 = {"Emily", "Robinson", "A"};
-  myRelation.insertRow(row1);
-  myRelation.insertRow(row2);
-  myRelation.insertRow(row3);
-  myRelation.insertRow(row4);
-  myRelation.insertRow(row5);
-  myRelation.insertRow(row6);
-  myRelation.insertRow(row7);
-  myRelation.insertRow(row8);
+  row = {"Jim", "Robinson", "B+"};
+  myRelation.insertRow(row);
+  row = {"Anne", "Robinson", "A"};
+  myRelation.insertRow(row);
+  row = {"Bill", "Smith", "A-"};
+  myRelation.insertRow(row);
+  row = {"Chayne", "Smith", "C+"};
+  myRelation.insertRow(row);
+  row = {"Emily", "Fellows", "A"};
+  myRelation.insertRow(row);
+  row = {"George", "Robinson", "B+"};
+  myRelation.insertRow(row);
+  row = {"Anne", "Smith", "A"};
+  myRelation.insertRow(row);
+  row = {"Emily", "Robinson", "A"};
+  myRelation.insertRow(row);
 //Print original Relation
-  cout << endl << "New Relation Example:" << endl;
-  cout << myRelation.toString();
+//  cout << endl << "New Relation Example:" << endl;
+//  cout << myRelation.toString();
+
 //Test 7: Q(X, 'Smith', Y)?
-  colValPair2 = CVPair(1, "Smith");
-  cvpList = {colValPair2};
-  myRelation1 = myRelation.select(cvpList);
+  cvp1 = CVPair(1, "Smith");
+  cvpList = {cvp1};
+  myRelationEdit1 = myRelation.select(cvpList);
+//  cout << myRelationEdit1.toString();
   columnsToKeep = {0, 2};
-  myRelation1 = myRelation1.project(columnsToKeep);
-  colValPair = CVPair(0, "X");
-  colValPair1 = CVPair(1, "Y");
-  cvpList = {colValPair, colValPair1};
-  myRelation1 = myRelation1.rename(cvpList);
-  cout << "Test 7: Q(X, 'Smith', Y)?" << endl;
-  cout << myRelation1.toString();
+  myRelationEdit1 = myRelationEdit1.project(columnsToKeep);
+  cvp1 = CVPair(0, "X");
+  cvp2 = CVPair(1, "Y");
+  cvpList = {cvp1, cvp2};
+  myRelationEdit1 = myRelationEdit1.rename(cvpList);
+//  cout << "Test 7: Q(X, 'Smith', Y)?" << endl;
+//  cout << myRelationEdit1.toString();
+
+//Comparison Relation
+  testColumns = {"X", "Y"};
+  testRelation = Relation("school", testColumns);
+  row = {"Bill", "A-"};
+  testRelation.insertRow(row);
+  row = {"Chayne", "C+"};
+  testRelation.insertRow(row);
+  row = {"Anne", "A"};
+  testRelation.insertRow(row);
+//  cout << testRelation.toString();
+
+  cout << "Test 7: " << compare(myRelationEdit1, testRelation) << endl;
+
 //Test 8: Q('Emily', Y, 'A')?
-  colValPair = CVPair(0, "Emily");
-  colValPair1 = CVPair(2, "A");
-  cvpList = {colValPair, colValPair1};
-  myRelation1 = myRelation.select(cvpList);
+  cvp1 = CVPair(0, "Emily");
+  cvp2 = CVPair(2, "A");
+  cvpList = {cvp1, cvp2};
+  myRelationEdit1 = myRelation.select(cvpList);
+//  cout << myRelationEdit1.toString();
   columnsToKeep = {1};
-  myRelation1 = myRelation1.project(columnsToKeep);
-  colValPair = CVPair(0, "Y");
-  cvpList = {colValPair};
-  myRelation1 = myRelation1.rename(cvpList);
-  cout << "Test 8: Q(X, Y, X)?" << endl;
-  cout << myRelation1.toString();
+  myRelationEdit1 = myRelationEdit1.project(columnsToKeep);
+  cvp1 = CVPair(0, "Y");
+  cvpList = {cvp1};
+  myRelationEdit1 = myRelationEdit1.rename(cvpList);
+//  cout << "Test 8: Q(X, Y, X)?" << endl;
+//  cout << myRelationEdit1.toString();
+
+//Comparison Relation
+  testColumns = {"Y"};
+  testRelation = Relation("school", testColumns);
+  row = {"Fellows"};
+  testRelation.insertRow(row);
+  row = {"Robinson"};
+  testRelation.insertRow(row);
+//  cout << testRelation.toString();
+
+  cout << "Test 8: " << compare(myRelationEdit1, testRelation) << endl;
 
 //New relation example
   columns = {"Due", "Scheduled", "Completed"};
   myRelation = Relation("To Do", columns);
-  row1 = {"10/04", "10/03", "10/04"};
-  row2 = {"10/10", "10/08", "10/08"};
-  row3 = {"10/12", "10/12", "10/13"};
-  row4 = {"10/15", "10/13", "10/15"};
-  row5 = {"10/20", "10/20", "10/20"};
-  myRelation.insertRow(row1);
-  myRelation.insertRow(row2);
-  myRelation.insertRow(row3);
-  myRelation.insertRow(row4);
-  myRelation.insertRow(row5);
+  row = {"10/04", "10/03", "10/04"};
+  myRelation.insertRow(row);
+  row = {"10/10", "10/08", "10/08"};
+  myRelation.insertRow(row);
+  row = {"10/12", "10/12", "10/13"};
+  myRelation.insertRow(row);
+  row = {"10/15", "10/13", "10/15"};
+  myRelation.insertRow(row);
+  row = {"10/20", "10/20", "10/20"};
+  myRelation.insertRow(row);
 //Print Original Relation
-  cout << endl << "New Relation Example:" << endl;
-  cout << myRelation.toString();
+//  cout << endl << "New Relation Example:" << endl;
+//  cout << myRelation.toString();
+
 //Test 9: select using Colomn Column Pairs
-  colColPair1 = CCPair(0, 1);
-  colColPair2 = CCPair(0, 2);
-  ccpList = {colColPair1, colColPair2};
-  myRelation1 = myRelation.select(ccpList);
-  cout << "Select using Column Column Pairs" << endl;
-  cout << myRelation1.toString();
+  ccp1 = CCPair(0, 1);
+  ccp2 = CCPair(0, 2);
+  ccpList = {ccp1, ccp2};
+  myRelationEdit1 = myRelation.select(ccpList);
+//  cout << "Test 9: Select using Column Column Pairs" << endl;
+//  cout << myRelationEdit1.toString();
+
+//Compare Relation
+  testColumns = {"Due", "Scheduled", "Completed"};
+  testRelation = Relation("To Do", testColumns);
+  row = {"10/20", "10/20", "10/20"};
+  testRelation.insertRow(row);
+
+  cout << "Test 9: " << compare(myRelationEdit1, testRelation) << endl;
+
 //Test 10: Q(X, '10/03', X)?
-  colValPair = {1, "10/03"};
-  cvpList = {colValPair};
-  colColPair1 = {0, 2};
-  ccpList = {colColPair1};
-  myRelation1 = myRelation.select(ccpList);
-  myRelation1 = myRelation1.select(cvpList);
+  cvp1 = CVPair(1, "10/03");
+  cvpList = {cvp1};
+  ccp1 = CCPair(0, 2);
+  ccpList = {ccp1};
+  myRelationEdit1 = myRelation.select(ccpList);
+  myRelationEdit1 = myRelationEdit1.select(cvpList);
   columnsToKeep = {0, 2};
-  myRelation1 = myRelation1.project(columnsToKeep);
-  colValPair = {0, "X"};
-  colValPair1 = {1, "X"};
-  cvpList = {colValPair, colValPair1};
-  myRelation1 = myRelation1.rename(cvpList);
-  cout << "Q(X, '10/03', X)?" << endl;
-  cout << myRelation1.toString();
+  myRelationEdit1 = myRelationEdit1.project(columnsToKeep);
+  cvp1 = CVPair(0, "X");
+  cvp2 = CVPair(1, "X");
+  cvpList = {cvp1, cvp2};
+  myRelationEdit1 = myRelationEdit1.rename(cvpList);
+//  cout << "Test 10: Q(X, '10/03', X)?" << endl;
+//  cout << myRelationEdit1.toString();
+
+//Compare Relation
+  testColumns = {"X", "X"};
+  testRelation = Relation("To Do", testColumns);
+  row = {"10/04", "10/04"};
+  testRelation.insertRow(row);
+
+  cout << "Test 10: " << compare(myRelationEdit1, testRelation) << endl;
   return 0;
 }

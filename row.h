@@ -25,7 +25,14 @@ public:
   bool valueExists(const CVPair colValPair) const;
   bool pairExists(const CCPair colColPair) const;
   bool operator<(const Row temp) const{
-    return cellVals[0] < temp.getStartingCell();
+    vector<string>tempCellVals = temp.getCellVals();
+    bool lessThan = false;
+    for (unsigned int i=0; i < tempCellVals.size(); i++) {
+      if (cellVals[i] < tempCellVals[i]) {
+        lessThan = true;
+      }
+    }
+    return lessThan;
   };
 };
 
